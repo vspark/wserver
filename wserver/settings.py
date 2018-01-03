@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': 'devops',
         'USER': 'root',
         'PASSWORD': '123qwe',
-        'HOST': '192.168.10.162',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

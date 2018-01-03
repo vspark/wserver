@@ -1,6 +1,6 @@
 from settings.models import system_settings
 from nginx.views import *
-import iptc
+#import iptc
 
 def ip_into_int(ip):
     return reduce(lambda x,y:(x<<8)+y,map(int,ip.split('.')))
