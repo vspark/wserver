@@ -1,0 +1,299 @@
+{% extends "base.html" %} {% block content %} {% load custom_filter %}
+<!-- Modal -->
+<div class="modal fade" id="edit_idc" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="edit_idc_title"></h4><small id="edit_idc_mtitle"></small>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_base_config" data-toggle="tab" id="a_default_conf">基础信息</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_base_config">
+                            <form class="form-horizontal" id="form_base_config">
+                                <input type="text" name="idc_id" id="input_idc_id" hidden>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">名称</label>
+                                    <div class="col-sm-9" id="div_idc_name">
+                                        <input type="text" class="form-control" name="idc_name" id="input_idc_name"
+                                               placeholder="请填写数据中心的官方名称" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">类型</label>
+                                    <div class="col-sm-9" id="div_listen">
+                                        <input type="text" class="form-control" name="idc_type" id="input_idc_type"
+                                               placeholder="数据中心的类型（实体IDC或公有云）" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">坐落地址</label>
+                                    <div class="col-sm-9" id="div_idc_address">
+                                        <input type="text" class="form-control" name="idc_address" id="input_idc_address"
+                                               placeholder="请填写数据中心的坐落地址（公有云请填写服务商域名）" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">到期时间</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="idc_service_time" id="input_idc_service_time"
+                                               placeholder="请填写数据中心本期合同的到期日期" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">数据中心联系电话</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="idc_contact" id="input_idc_contact"
+                                               placeholder="请填写数据中心技术维护24小时联系电话" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">机柜资源</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="idc_racks" id="input_idc_racks"
+                                               placeholder="请填写数据中心已租用的机柜编码,多个机柜可以用','号隔开" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">带宽资源</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="idc_bandwidth" id="input_idc_bandwidth"
+                                               placeholder="请填写数据中心已租用网络带宽(单位M或G)" onblur="check_form(this)">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <span class="control-label pull-right">
+                                            <small>数据中心基础信息（* 为可选项）</small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save_idc()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <button type="button" class="btn btn-primary pull-left" onclick="edit_idc(1)">添加数据中心</button>
+                <div class="input-group pull-right" style="width: 350px;">
+                    <input type="text" name="idc_filter" id="input_idc_filter"
+                           class="form-control pull-right" placeholder="输入数据中心名称|地址|类型"
+                           autofocus="" onkeydown="if(event.keyCode===13){idc_filter()}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" onclick="idc_filter()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>坐落地址</th>
+                            <th>到期时间</th>
+                            <th>数据中心联系电话</th>
+                            <th>机柜资源</th>
+                            <th>带宽资源</th>
+                            <th>创建时间</th>
+                            <th>最后一次修改</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in idc %}
+                        <tr>
+                            <td >
+                                {{ item.idc_name }}
+                            </td>
+                            <td>
+                                {{ item.idc_type }}
+                            </td>
+                            <td>
+                                {{ item.address }}
+                            </td>
+                            <td>
+                                {{ item.service_time }}
+                            </td>
+                            <td>
+                                {{ item.contact }}
+                            </td>
+                            <td>
+                                {{ item.stack }}
+                            </td>
+                            <td>
+                                {{ item.bandwidth }}
+                            </td>
+                            <td>
+                                {{ item.create_time }}
+                            </td>
+                            <td>
+                                {{ item.update_time }}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-xs" onclick="edit_idc(0, '{{ item.pk }}')">修改</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="delete_idc('{{ item.pk }}','{{ item.idc_name }}')">删除</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    {% if idc.has_previous %}
+                    <li><a href="?page={{ idc.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+                    {% else %}
+                    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+                    {% endif %} {% if idc.has_next %}
+                    <li><a href="?page={{ idc.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+                    {% else %}
+                    <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
+                    {% endif %}
+                    <li class="paginate_button previous disabled">
+                        <span>第 {{ idc.number }} 页 - 共 {{ idc.paginator.num_pages }} 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#menu_cmdb_idc').addClass('active')
+$('#page_header').text('数据中心管理')
+$('#page_header_descript').text('用于管理数据中心相关信息')
+$('#page_nav').text('CMDB')
+$('#page_name').text('数据中心')
+
+function check_form(input) {
+    var input_div = $(input.closest("div"))
+    input_div.removeClass('has-error')
+    input_div.removeClass('has-success')
+    if (($(input).val() == "") || ($(input).attr('name') == "proxy_listen" && !$(input).val().indexOf("8000"))) {
+        input_div.addClass('has-error')
+    } else {
+        input_div.addClass('has-success')
+    }
+}
+
+function edit_idc(create, pk) {
+    $('#a_default_conf').trigger('click');
+    if (create == 1) {
+        $('#edit_idc_title').text('创建数据中心');
+        $('#edit_idc_mtitle').text('');
+        $('#input_idc_name').val('');
+        $('#input_idc_type').val('');
+        $('#input_idc_address').val('');
+        $('#input_idc_service_time').val('');
+        $('#input_idc_contact').val('');
+        $('#input_idc_racks').val('');
+        $('#input_idc_bandwidth').val('');
+        $('#input').empty();
+        $("[data-mask]").inputmask();
+        $('#edit_idc').modal('show')
+    } else {
+        var post = {pk: pk};
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/idc/query/',
+            data: JSON.stringify(post),
+            dataType: "json",
+            success: function(p) {
+                if (p.flag == "Success") {
+                    $('#edit_idc_title').text('编辑数据中心');
+                    $('#edit_idc_mtitle').text(pk);
+                    $('#input_idc_name').val('');
+                    $('#input_idc_type').val('');
+                    $('#input_idc_address').val('');
+                    $('#input_idc_service_time').val('');
+                    $('#input_idc_contact').val('');
+                    $('#input_idc_racks').val('');
+                    $('#input_idc_bandwidth').val('');
+                    $('#edit_idc').modal('show')
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！');
+                    top.location = '/login/'
+                } else {
+                    alert('查询失败！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function delete_idc(pk, name) {
+    if (confirm("确认删除[" + pk + name + "]？")) {
+        var post = {
+            pk: pk
+        };
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/idc/delete/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("删除成功!")
+                    top.location = '/cmdb/idc/'
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('删除错误！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function idc_filter() {
+    window.location = '/cmdb/idc/?filter=' + $('#input_idc_filter').val()
+}
+
+function save_idc() {
+        var base_config = $('#form_base_config').serializeObject();
+        var post = {'base_config': base_config};
+        $.ajax({
+            type: 'POST',
+            url: '/cmdb/idc/save/',
+            data: JSON.stringify(post),
+            dataType: 'JSON',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("保存成功,JSON数据: " + JSON.stringify(post));
+                    top.location = '/cmdb/idc/'
+                }else if (p.flag == "Error"){
+                    alert("保存失败，请检查数据,错误信息: " + p.context)
+                }
+            },
+            error: function () {
+                alert("error!");
+            }
+        })
+}
+</script>
+{% endblock %}
