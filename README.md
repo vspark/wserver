@@ -1,7 +1,7 @@
 # W-server
 
 
-> * 项目基于 [Django](https://www.djangoproject.com/) + [AdminLTE](https://www.almsaeedstudio.com/) 构建，在 Ubuntu 14.04 上测试通过；建议使用 Chrome 浏览器。
+> * 项目基于 [Django](https://www.djangoproject.com/) + [AdminLTE](https://www.almsaeedstudio.com/) 构建，建议Ubuntu 14.04 上测试调试；建议使用 Chrome 浏览器。
 > * 为了后续扩展方便，请使用 [Tengine](http://tengine.taobao.org/) 替代 Nginx 服务
 
 ## 项目地址
