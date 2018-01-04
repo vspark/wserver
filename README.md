@@ -40,6 +40,18 @@ pip install -r requirements.txt
 python manage.py makemigrations  
 python manage.py migrate  
 ```
+* static 目录下文件配置
+````
+windows本地：
+    bootstrap 文件内容 ../resource/AdminLTE/
+    dist 文件内容 ../resource/AdminLTE/
+    plugins 文件内容 ../resource/AdminLTE/
+    
+linux & MAC:
+    ln -s ../resource/AdminLTE/ bootstrap
+    ln -s ../resource/AdminLTE/ dist
+    ln -s ../resource/AdminLTE/ plugins
+````
 * 启动服务
 ```
 service supervisor restart  
