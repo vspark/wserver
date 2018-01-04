@@ -2,12 +2,13 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext, loader
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import logout,login
+from django.contrib.auth import logout, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils import timezone
 from nginx.ip import *
+from django.conf import settings
+
 import json
 
 def login_view(request):

@@ -16,8 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import RedirectView
-from django.conf import settings
 from .views import logout_view,login_view,create_superuser
+from django.conf import settings
 
 urlpatterns = [
     url(r'^login/$', login_view),
