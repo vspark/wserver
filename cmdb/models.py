@@ -11,6 +11,7 @@ from django.db import models
 # 示例：user_id user_name sex
 from django.utils import timezone
 
+
 class idc(models.Model):
     idc_name = models.CharField(max_length=128, null=False)
     idc_type = models.CharField(max_length=20, null=False)
@@ -19,8 +20,9 @@ class idc(models.Model):
     contact = models.CharField(max_length=30, null=False)
     stack = models.CharField(max_length=128, null=True)
     bandwidth = models.CharField(max_length=10, null=True)
-    create_time = models.DateTimeField(default = timezone.now, editable=True)
-    update_time = models.DateTimeField(default = timezone.now, editable=True)
+    create_time = models.DateTimeField(default=timezone.now, editable=True)
+    update_time = models.DateTimeField(default=timezone.now, editable=True)
+
 
 class stack(models.Model):
     stack_name = models.CharField(max_length=128, null=False)
@@ -29,11 +31,12 @@ class stack(models.Model):
     supply_voltage = models.CharField(max_length=20, null=False)
     limit_current = models.CharField(max_length=20, null=False)
     pdu_type = models.CharField(max_length=20, null=False)
-    create_time = models.DateTimeField(default = timezone.now, editable=True)
-    update_time = models.DateTimeField(default = timezone.now, editable=True)
+    create_time = models.DateTimeField(default=timezone.now, editable=True)
+    update_time = models.DateTimeField(default=timezone.now, editable=True)
+
 
 class wan(models.Model):
-    wan_name = models.CharField(max_length=128,null=False)
+    wan_name = models.CharField(max_length=128, null=False)
     wan_type = models.CharField(max_length=20, null=False)
     provider = models.CharField(max_length=128, null=False)
     port_type = models.CharField(max_length=20, null=False)
@@ -45,8 +48,9 @@ class wan(models.Model):
     stack_id = models.CharField(max_length=10, null=False)
     device_id = models.CharField(max_length=10, null=False)
     device_port = models.CharField(max_length=10, null=False)
-    create_time = models.DateTimeField(default = timezone.now, editable=True)
-    update_time = models.DateTimeField(default = timezone.now, editable=True)
+    create_time = models.DateTimeField(default=timezone.now, editable=True)
+    update_time = models.DateTimeField(default=timezone.now, editable=True)
+
 
 class device(models.Model):
     device_name = models.CharField(max_length=128, null=False)
@@ -64,9 +68,10 @@ class device(models.Model):
     ip = models.GenericIPAddressField()
     mac = models.CharField(max_length=16, null=False)
     serial_no = models.CharField(max_length=128, null=False)
-    create_time = models.DateTimeField(default = timezone.now, editable=True)
-    update_time = models.DateTimeField(default = timezone.now, editable=True)
+    create_time = models.DateTimeField(default=timezone.now, editable=True)
+    update_time = models.DateTimeField(default=timezone.now, editable=True)
+
 
 class foo(models.Model):
-    foo_name = models.CharField(max_length=20,null=False)
-    foo_bar = models.CharField(max_length=128,null=False)
+    foo_name = models.CharField(max_length=20, null=False)
+    foo_bar = models.CharField(max_length=128, null=False)

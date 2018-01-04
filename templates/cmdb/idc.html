@@ -220,13 +220,14 @@ function edit_idc(create, pk) {
                 if (p.flag == "Success") {
                     $('#edit_idc_title').text('编辑数据中心');
                     $('#edit_idc_mtitle').text(pk);
-                    $('#input_idc_name').val('');
-                    $('#input_idc_type').val('');
-                    $('#input_idc_address').val('');
-                    $('#input_idc_service_time').val('');
-                    $('#input_idc_contact').val('');
-                    $('#input_idc_racks').val('');
-                    $('#input_idc_bandwidth').val('');
+                    $('#input_idc_id').val(pk);
+                    $('#input_idc_name').val(p.context.db_idc.idc_name);
+                    $('#input_idc_type').val(p.context.db_idc.idc_type);
+                    $('#input_idc_address').val(p.context.db_idc.address);
+                    $('#input_idc_service_time').val(p.context.db_idc.service_time);
+                    $('#input_idc_contact').val(p.context.db_idc.contact);
+                    $('#input_idc_racks').val(p.context.db_idc.stack);
+                    $('#input_idc_bandwidth').val(p.context.db_idc.bandwidth);
                     $('#edit_idc').modal('show')
                 } else if (p.flag == "Error" && p.context == "AuthFailed") {
                     alert('认证失败！请重新登录！');

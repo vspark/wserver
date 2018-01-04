@@ -11,6 +11,7 @@ from django.conf import settings
 
 import json
 
+
 def login_view(request):
     redirect_to = settings.LOGIN_REDIRECT_URL
 
@@ -40,6 +41,7 @@ def login_view(request):
 
     return render_to_response('login.html',context)
 
+
 def create_superuser(request):
     redirect_to = settings.LOGIN_REDIRECT_URL
 
@@ -58,10 +60,12 @@ def create_superuser(request):
 
     return render_to_response('superuser.html')
 
+
 def logout_view(request):
     Session.objects.filter(expire_date__lte=timezone.now()).delete()
     logout(request)
     return HttpResponseRedirect('/login/')
+
 
 def is_auth(view):
     def decorator(request, *args, **kwargs):

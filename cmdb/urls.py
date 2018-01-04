@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url
 from . import views
-#from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^dashboard/', views.view),
@@ -28,9 +27,9 @@ urlpatterns = [
     url(r'^net/', views.net),
     url(r'^device/', views.device_view),
     url(r'^idc/$', views.idc_view),
-    url(r'idc/query/$',views.idc_query),
-    url(r'idc/save/$',views.idc_save),
+    url(r'idc/query/$', views.idc_query),
+    url(r'idc/save/$', views.idc_save),
     url(r'idc/delete/$', views.idc_delete),
     url(r'^foo/', views.foo),
-    url(r'^foo_save/$',views.foo_save),
+    url(r'^foo_save/$', views.foo_save),
 ]
