@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
+
+
 class upstream_config(models.Model):
     status = models.BooleanField(default=False)
     address = models.CharField(max_length=64,null=True)
@@ -10,6 +12,7 @@ class upstream_config(models.Model):
     weight = models.IntegerField(null=False)
     max_fails = models.IntegerField()
     fail_timeout = models.IntegerField()
+
 
 class proxy_config(models.Model):
     config_id = models.CharField(max_length=64,null=True)
