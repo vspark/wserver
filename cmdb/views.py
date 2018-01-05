@@ -1,5 +1,5 @@
+from datetime import datetime
 from django.shortcuts import render, render_to_response
-from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.db.models import Q
@@ -131,25 +131,23 @@ def idc_save(request):
         idc_bandwidth       = post['base_config']['idc_bandwidth']
 
         db_idc = {
-            'id': idc_id,
             'idc_name': idc_name,
             'idc_type': idc_type,
             'address': idc_address,
             'service_time': idc_service_time,
             'contact': idc_contact,
             'stack': idc_stack,
-            'bandwidth': idc_bandwidth
+            'bandwidth': idc_bandwidth,
+            'update_time': datetime.now()
         }
-        if idc_name:
-            create_flag = False
-        else:
-            create_flag = True
-        if create_flag:
+
+        if not idc_id:
             models.idc.objects.create(**db_idc)
         else:
             models.idc.objects.filter(id=idc_id).update(**db_idc)
             models.idc.objects.get(id=idc_id)
         context = {"flag": "Success"}
+
     except Exception, e:
         context = {"flag": "Error", "context": str(e)}
 
