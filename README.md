@@ -43,14 +43,14 @@ python manage.py migrate
 * static 目录下文件配置
 ````
 windows本地：
-    bootstrap 文件内容 ../resource/AdminLTE/
-    dist 文件内容 ../resource/AdminLTE/
-    plugins 文件内容 ../resource/AdminLTE/
+    bootstrap 文件内容 ../resource/AdminLTE/bootstrap
+    dist 文件内容 ../resource/AdminLTE/dist
+    plugins 文件内容 ../resource/AdminLTE/plugins
     
 linux & MAC:
-    ln -s ../resource/AdminLTE/ bootstrap
-    ln -s ../resource/AdminLTE/ dist
-    ln -s ../resource/AdminLTE/ plugins
+    ln -s ../resource/AdminLTE/bootstrap bootstrap
+    ln -s ../resource/AdminLTE/dist dist
+    ln -s ../resource/AdminLTE/plugins plugins
 ````
 * 启动服务
 ```

@@ -68,7 +68,7 @@ def device_view(request):
     except EmptyPage:
         contexts = paginater.page_range(paginater.num_pages)
 
-    return render_to_response('cmdb/device.html', {'device': contexts, 'filter': filter})
+    return render_to_response('cmdb/device1.html', {'device': contexts, 'filter': filter})
     pass
 
 
@@ -97,6 +97,7 @@ def idc_view(request):
     pass
 
 
+@login_required(login_url="/login/")
 def idc_query(request):
     try:
         post = json.loads(request.body)
@@ -118,6 +119,7 @@ def idc_query(request):
     pass
 
 
+@login_required(login_url="/login/")
 def idc_save(request):
     try:
         post = json.loads(request.body)
@@ -155,6 +157,7 @@ def idc_save(request):
     pass
 
 
+@login_required(login_url="/login/")
 def idc_delete(request):
     try:
         post = json.loads(request.body)
@@ -167,6 +170,7 @@ def idc_delete(request):
     pass
 
 
+@login_required(login_url="/login/")
 def foo_save(request):
     try:
         post = json.loads(request.body)
