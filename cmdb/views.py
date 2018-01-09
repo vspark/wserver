@@ -7,6 +7,7 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 import json
 
 from cmdb import models
+from cmdb.models import device
 
 
 def foo(request):
@@ -68,7 +69,28 @@ def device_view(request):
     except EmptyPage:
         contexts = paginater.page_range(paginater.num_pages)
 
-    return render_to_response('cmdb/device1.html', {'device': contexts, 'filter': filter})
+    return render_to_response('cmdb/device.html', {'device': contexts, 'filter': filter})
+    pass
+
+@login_required(login_url="/login/")
+def idc_query(request):
+    try:
+        post = json.loads(request.body)
+        print post
+        db_idc = models.device.objects.get(pk=post["pk"])
+        p = {
+            '_name': db_idc.idc_name,
+            'idc_type': db_idc.idc_type,
+            'address': db_idc.address,
+            'service_time': str(db_idc.service_time),
+            'contact': db_idc.contact,
+            'stack': db_idc.stack,
+            'bandwidth': db_idc.bandwidth
+        }
+        context = {"flag": "Success", "context": {"db_idc": p}}
+    except Exception, e:
+        context = {"flag": "Error", "context": str(e)}
+    return HttpResponse(json.dumps(context))
     pass
 
 

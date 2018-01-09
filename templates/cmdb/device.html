@@ -23,51 +23,93 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">类型</label>
-                                    <div class="col-sm-9" id="div_listen">
-                                        <input type="text" class="form-control" name="device_type" id="input_device_type" placeholder="设备类型（服务器|网络设备|存储|其他）" onblur="check_form(this)">
+                                    <label class="col-sm-2 control-label">生产商</label>
+                                    <div class="col-sm-9" id="div_device_vendor">
+                                        <input type="text" class="form-control" name="device_vendor" id="input_device_vendor" placeholder="请填写设备厂商" onblur="check_form(this)">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">坐落地址</label>
-                                    <div class="col-sm-9" id="div_device_address">
-                                        <input type="text" class="form-control" name="device_address" id="input_device_address" placeholder="请填写数据中心的坐落地址（公有云请填写服务商域名）" onblur="check_form(this)">
+                                    <label class="col-sm-2 control-label">设备类型</label>
+                                    <div class="col-sm-9" id="div_device_type">
+                                        <input type="text" class="form-control" name="device_type" id="input_device_tpye" placeholder="请填写设备类型" onblur="check_form(this)">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">到期时间</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="device_service_time" id="input_device_service_time" placeholder="请填写数据中心本期合同的到期日期" onblur="check_form(this)">
+                                    <label class="col-sm-2 control-label">设备型号</label>
+                                    <div class="col-sm-9" id="div_device_model">
+                                        <input type="text" class="form-control" name="device_model" id="input_device_model" placeholder="请填写设备型号" onblur="check_form(this)">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">数据中心联系电话</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="device_contact" id="input_device_contact" placeholder="请填写数据中心技术维护24小时联系电话" onblur="check_form(this)">
+                                    <label class="col-sm-2 control-label">配置信息</label>
+                                    <div class="col-sm-9" id="div_device_parameters">
+                                        <input type="text" class="form-control" name="device_parameters" id="input_device_parameters" placeholder="请填写设备配置信息" onblur="check_form(this)">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">机柜资源</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="device_racks" id="input_device_racks" placeholder="请填写数据中心已租用的机柜编码,多个机柜可以用','号隔开" onblur="check_form(this)">
+                                    <label class="col-sm-2 control-label">机柜id</label>
+                                    <div class="col-sm-9" id="div_device_stack_id">
+                                        <input type="text" class="form-control" name="device_stack_id" id="input_device_stack_id" placeholder="请填写设备机柜ID" onblur="check_form(this)">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">带宽资源</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="device_bandwidth" id="input_device_bandwidth" placeholder="请填写数据中心已租用网络带宽(单位M或G)" onblur="check_form(this)">
+                                    <label class="col-sm-2 control-label">位置</label>
+                                    <div class="col-sm-9" id="div_device_position">
+                                        <input type="text" class="form-control" name="device_position" id="input_device_position" placeholder="请填写设备位置" onblur="check_form(this)">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">* 描述</label>
-                                    <div class="col-sm-9">
-                                        <textarea class="form-control" rows="4" name="device_description" id="input_device_description" placeholder="此负载均衡详细描述"></textarea>
+                                    <label class="col-sm-2 control-label">宿主机id</label>
+                                    <div class="col-sm-9" id="div_device_host_device_id">
+                                        <input type="text" class="form-control" name="device_host_device_id" id="input_device_host_device_id" placeholder="请填写设备宿主机ID" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">高度</label>
+                                    <div class="col-sm-9" id="div_device_height">
+                                        <input type="text" class="form-control" name="device_height" id="input_device_height" placeholder="请填写设备高度" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">上联设备</label>
+                                    <div class="col-sm-9" id="div_uplink_device">
+                                        <input type="text" class="form-control" name="device_uplink_device" id="input_device_uplink_device" placeholder="请填写上联设备名称" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">上联端口</label>
+                                    <div class="col-sm-9" id="div_uplink_port">
+                                        <input type="text" class="form-control" name="device_uplink_port" id="input_uplink_port" placeholder="请填写上联设备端口" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">服务到期时间</label>
+                                    <div class="col-sm-9" id="div_service_time">
+                                        <input type="text" class="form-control" name="device_service_time" id="input_device_service_time" placeholder="设备服务到期时间" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">IP地址</label>
+                                    <div class="col-sm-9" id="div_ip">
+                                        <input type="text" class="form-control" name="device_ip" id="input_device_ip" placeholder="请填写设备ip地址" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">MAC地址</label>
+                                    <div class="col-sm-9" id="div_mac">
+                                        <input type="text" class="form-control" name="device_mac" id="input_device_mac" placeholder="请填写设备MAC地址" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">序列号</label>
+                                    <div class="col-sm-9" id="div_serial_no">
+                                        <input type="text" class="form-control" name="device_serial_no" id="input_device_serial_no" placeholder="请填写设备序列号" onblur="check_form(this)">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12">
                                         <span class="control-label pull-right">
-                                            <small>数据中心基础信息（* 为可选项）</small>
+                                            <small>物理设备基础信息（* 为可选项）</small>
                                         </span>
                                     </div>
                                 </div>
@@ -88,9 +130,10 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <button type="button" class="btn btn-primary pull-left" onclick="edit_device(1)">添加物理设备</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="edit_device(1,0)">添加物理设备</button>
                 <div class="input-group pull-right" style="width: 350px;">
-                    <input type="text" name="device_filter" id="input_device_filter" class="form-control pull-right" placeholder="输入设备名称|类型|型号|序列号|IP" autofocus="" onkeydown='if(event.keyCode===13){device_filter()}'>
+                    <input type="text" name="device_filter" id="input_device_filter" class="form-control pull-right"
+                           placeholder="输入设备名称|类型|型号|序列号|IP" autofocus="" onkeydown='if(event.keyCode===13){device_filter()}'>
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" onclick="device_filter()"><i class="fa fa-search"></i></button>
                     </div>
@@ -158,7 +201,7 @@
                                 {{ item.uplink_port }}
                             </td>
                             <td>
-                                {{ item.service_time }}
+                                {{ item.service_time | date:"Y-m-d"}}
                             </td>
                             <td>
                                 {{ item.ip }}
@@ -170,10 +213,14 @@
                                 {{ item.serial_no }}
                             </td>
                             <td>
-                                {{ item.create_time }}
+                                {{ item.create_time | date:"Y-m-d H:i:s" }}
                             </td>
                             <td>
-                                {{ item.update_time }}
+                                {{ item.update_time | date:"Y-m-d H:i:s" }}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-xs" onclick="edit_device(0, '{{ item.pk }}')">修改</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="delete_device('{{ item.pk }}','{{ item.idc_name }}')">删除</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -206,6 +253,126 @@ $('#page_header').text('物理设备管理')
 $('#page_header_descript').text('用于管理物理设备相关信息')
 $('#page_nav').text('CMDB')
 $('#page_name').text('物理设备')
+
+function device_filter() {
+    window.location = '/cmdb/device/?filter=' + $('#input_device_filter').val()
+}
+
+function save_device() {
+        var base_config = $('#form_base_config').serializeObject();
+        var post = {'base_config': base_config};
+        $.ajax({
+            type: 'POST',
+            url: '/cmdb/device/save/',
+            data: JSON.stringify(post),
+            dataType: 'JSON',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("保存成功,JSON数据: " + JSON.stringify(post));
+                    top.location = '/cmdb/device/'
+                }else if (p.flag == "Error"){
+                    alert("保存失败，请检查数据,错误信息: " + p.context)
+                }
+            },
+            error: function () {
+                alert("error!");
+            }
+        })
+}
+
+function delete_device(pk, name) {
+    if (confirm("确认删除[" + pk + name + "]？")) {
+        var post = {
+            pk: pk
+        };
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/device/delete/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("删除成功!")
+                    top.location = '/cmdb/device/'
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('删除错误！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function edit_device(create, pk) {
+    $('#a_default_conf').trigger('click');
+    if (create == 1) {
+        $('#edit_device_title').text('添加物理设备');
+        $('#edit_device_mtitle').text('');
+        $('#input_device_name').val('');
+        $('#input_device_vendor').val('');
+        $('#input_device_tpye').val('');
+        $('#input_device_model').val('');
+        $('#input_device_parameters').val('');
+        $('#input_device_stack_id').val('');
+        $('#input_device_position').val('');
+        $('#input_device_host_device_id').val('');
+        $('#input_device_height').val('');
+        $('#input_device_uplink_device').val('');
+        $('#input_uplink_port').val('');
+        $('#input_device_service_time').val('');
+        $('#input_device_ip').val('');
+        $('#input_device_mac').val('');
+        $('#input_device_serial_no').val('');
+        $('#input').empty();
+        $("[data-mask]").inputmask();
+        $('#edit_device').modal('show')
+    } else {
+        var post = {pk: pk};
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/device/query/',
+            data: JSON.stringify(post),
+            dataType: "json",
+            success: function(p) {
+                if (p.flag == "Success") {
+                    $('#edit_idc_title').text('编辑物理设备');
+                    $('#edit_idc_mtitle').text('正在编辑的物理设备：' + p.context.db_idc.idc_name);
+                    $('#input_idc_id').val(pk);
+                    $('#input_device_name').val('');
+                    $('#input_device_vendor').val('');
+                    $('#input_device_tpye').val('');
+                    $('#input_device_model').val('');
+                    $('#input_device_parameters').val('');
+                    $('#input_device_stack_id').val('');
+                    $('#input_device_position').val('');
+                    $('#input_device_host_device_id').val('');
+                    $('#input_device_height').val('');
+                    $('#input_device_uplink_device').val('');
+                    $('#input_uplink_port').val('');
+                    $('#input_device_service_time').val('');
+                    $('#input_device_ip').val('');
+                    $('#input_device_mac').val('');
+                    $('#input_device_serial_no').val('');
+                    
+                    $('#edit_idc').modal('show')
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！');
+                    top.location = '/login/'
+                } else {
+                    alert('查询失败！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
 
 </script>
 {% endblock %}
