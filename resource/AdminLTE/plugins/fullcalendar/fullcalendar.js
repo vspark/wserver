@@ -206,7 +206,7 @@ function isForcedAtomicOption(name) {
 
 
 // TODO: document the structure and ordering of a FullCalendar lang file
-// TODO: rename everything "lang" to "locale", like what the moment project did
+// TODO: rename everything "lang" to "locale", like what the moment pro did
 
 
 // Initialize jQuery UI datepicker translations while using some of the translations

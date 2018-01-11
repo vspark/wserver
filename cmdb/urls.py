@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^dashboard/', views.view),
     url(r'^installations/', views.installations),
     url(r'^statistics/', views.statistics),
+    url(r'^dns/', views.domain_view),
     url(r'^ip/', views.ip),
     url(r'^keys/', views.keys),
     url(r'^basesoft/', views.basesoft),

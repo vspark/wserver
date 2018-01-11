@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^settings/', include('settings.urls')),
     url(r'^$', RedirectView.as_view(url='/dashboard/')),
     url(r'^cmdb/', include('cmdb.urls')),
+    url(r'^project/', include('project.urls')),
 
 ]
 urlpatterns += staticfiles_urlpatterns()

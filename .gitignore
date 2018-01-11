@@ -10,3 +10,4 @@
 *.iws
 static
 env
+resource/tableEdit

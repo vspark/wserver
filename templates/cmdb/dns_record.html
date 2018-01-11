@@ -1,0 +1,217 @@
+{% extends "base.html" %} {% block content %} {% load custom_filter %}
+<!-- Modal -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <button type="button" class="btn btn-primary pull-left" onclick="edit_dns(1,0)">添加解析</button>
+                <div class="input-group pull-right" style="width: 350px;">
+                    <input type="text" name="dns_filter" id="input_dns_filter"
+                           class="form-control pull-right" placeholder="输入要查找的主机记录|使用环境|应用名称|IP地址"
+                           autofocus="" onkeydown="if(event.keyCode===13){dns_filter()}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" onclick="dns_filter()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>主机记录(RR)</th>
+                            <th>记录值(Value)</th>
+                            <th>记录类型(Type)</th>
+                            <th>线路类型(Line)</th>
+                            <th>MX优先级(Priority)</th>
+                            <th>TTL</th>
+                            <th>环境(Env)</th>
+                            <th>业务或服务(Service)</th>
+                            <th>创建时间(Create Time)</th>
+                            <th>最后一次修改(Upate Time)</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in dns %}
+                        <tr>
+                            <td >
+                                {{ item.dns_name }}
+                            </td>
+                            <td>
+                                {{ item.dns_type }}
+                            </td>
+                            <td>
+                                {{ item.address }}
+                            </td>
+                            <td>
+                                {{ item.service_time  | date:"Y-m-d"}}
+                            </td>
+                            <td>
+                                {{ item.contact }}
+                            </td>
+                            <td>
+                                {{ item.stack }}
+                            </td>
+                            <td>
+                                {{ item.bandwidth }} Mb
+                            </td>
+                            <td>
+                                {{ item.create_time | date:"Y-m-d H:i:s"}}
+                            </td>
+                            <td>
+                                {{ item.update_time  | date:"Y-m-d H:i:s"}}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-xs" onclick="edit_dns(0, '{{ item.pk }}')">修改</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="delete_dns('{{ item.pk }}','{{ item.dns_name }}')">删除</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    {% if dns.has_previous %}
+                    <li><a href="?page={{ dns.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+                    {% else %}
+                    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+                    {% endif %} {% if dns.has_next %}
+                    <li><a href="?page={{ dns.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+                    {% else %}
+                    <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
+                    {% endif %}
+                    <li class="paginate_button previous disabled">
+                        <span>第 {{ dns.number }} 页 - 共 {{ dns.paginator.num_pages }} 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#menu_cmdb_dns').addClass('active')
+$('#page_header').text('域名解析管理')
+$('#page_header_descript').text('用于管理域名及记录解析')
+$('#page_nav').text('DNS')
+$('#page_name').text('域名解析')
+
+function check_form(input) {
+    var input_div = $(input.closest("div"))
+    input_div.removeClass('has-error')
+    input_div.removeClass('has-success')
+    if (($(input).val() == "") || ($(input).attr('name') == "proxy_listen" && !$(input).val().indexOf("8000"))) {
+        input_div.addClass('has-error')
+    } else {
+        input_div.addClass('has-success')
+    }
+}
+
+function edit_dns(create, pk) {
+    $('#a_default_conf').trigger('click');
+    if (create == 1) {
+        $('#edit_dns_title').text('创建数据中心');
+        $('#edit_dns_mtitle').text('');
+        $('#input_dns_name').val('');
+        $('#input_dns_type').val('');
+        $('#input_dns_address').val('');
+        $('#input_dns_service_time').val('');
+        $('#input_dns_contact').val('');
+        $('#input_dns_racks').val('');
+        $('#input_dns_bandwidth').val('');
+        $('#input').empty();
+        $("[data-mask]").inputmask();
+        $('#edit_dns').modal('show')
+    } else {
+        var post = {pk: pk};
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/dns/query/',
+            data: JSON.stringify(post),
+            dataType: "json",
+            success: function(p) {
+                if (p.flag == "Success") {
+                    $('#edit_dns_title').text('编辑数据中心');
+                    $('#edit_dns_mtitle').text('正在编辑的数据中心：' + p.context.db_dns.dns_name);
+                    $('#input_dns_id').val(pk);
+                    $('#input_dns_name').val(p.context.db_dns.dns_name);
+                    $('#input_dns_type').val(p.context.db_dns.dns_type);
+                    $('#input_dns_address').val(p.context.db_dns.address);
+                    $('#input_dns_service_time').val(p.context.db_dns.service_time);
+                    $('#input_dns_contact').val(p.context.db_dns.contact);
+                    $('#input_dns_racks').val(p.context.db_dns.stack);
+                    $('#input_dns_bandwidth').val(p.context.db_dns.bandwidth);
+
+                    $('#edit_dns').modal('show')
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！');
+                    top.location = '/login/'
+                } else {
+                    alert('查询失败！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function delete_dns(pk, name) {
+    if (confirm("确认删除[" + pk + name + "]？")) {
+        var post = {
+            pk: pk
+        };
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/dns/delete/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("删除成功!")
+                    top.location = '/cmdb/dns/'
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('删除错误！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function dns_filter() {
+    window.location = '/cmdb/dns/?filter=' + $('#input_dns_filter').val()
+}
+
+function save_dns() {
+        var base_config = $('#form_base_config').serializeObject();
+        var post = {'base_config': base_config};
+        $.ajax({
+            type: 'POST',
+            url: '/cmdb/dns/save/',
+            data: JSON.stringify(post),
+            dataType: 'JSON',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("保存成功,JSON数据: " + JSON.stringify(post));
+                    top.location = '/cmdb/dns/'
+                }else if (p.flag == "Error"){
+                    alert("保存失败，请检查数据,错误信息: " + p.context)
+                }
+            },
+            error: function () {
+                alert("error!");
+            }
+        })
+}
+</script>
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends "base.html" %} {% block content %} {% load custom_filter %}
+<!-- Modal -->
+<div class="modal fade" id="edit_project" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="edit_project_title"></h4><small id="edit_project_mtitle"></small>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_base_config" data-toggle="tab" id="a_default_conf">开启新项目或产品</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_base_config">
+                            <form class="form-horizontal" id="form_base_config">
+                                <input type="text" name="project_id" id="input_project_id" hidden>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">名称</label>
+                                    <div class="col-sm-9" id="div_project_name">
+                                        <input type="text" class="form-control" name="project_name" id="input_project_name"
+                                               placeholder="请填写新产品或新项目的名称" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">英文名称</label>
+                                    <div class="col-sm-9" id="div_project_name">
+                                        <input type="text" class="form-control" name="project_name_en" id="input_project_name_en"
+                                               placeholder="请填写新产品或新项目的英文名称|这会成为版本仓库的名字" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">项目关键字</label>
+                                    <div class="col-sm-9" id="div_project_name">
+                                        <input type="text" class="form-control" name="project_vcs_key" id="input_project_vcs_key"
+                                               placeholder="项目关键字一般由英文名字自动生成" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">项目负责人</label>
+                                    <div class="col-sm-9" id="div_admin">
+                                        <input type="text" class="form-control" name="project_admin" id="input_project_admin"
+                                               placeholder="项目负责人" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">项目或产品域名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="project_domain" id="input_project_domain"
+                                               placeholder="请填写项目或产品使用的域名" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <span class="control-label pull-right">
+                                            <small>项目或产品信息（* 为可选项，项目生成10分钟后，将不能修改，请谨慎填写）</small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save_project()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <button type="button" class="btn btn-primary pull-left" onclick="edit_project(1,0)">添加项目</button>
+                <div class="input-group pull-right" style="width: 350px;">
+                    <input type="text" name="project_filter" id="input_project_filter"
+                           class="form-control pull-right" placeholder="输入要查找的项目|产品"
+                           autofocus="" onkeydown="if(event.keyCode===13){project_filter()}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" onclick="project_filter()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-bordered table-hover dataTable table-striped" role="grid">
+                    <thead>
+                        <tr role="row">
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" >#</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">项目（产品）</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">英文名</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">负责人</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">使用的根域名</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">版本仓库</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">文档集</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">创建时间</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">最后一次修改</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in project %}
+                        <tr role="row" class="odd">
+                            <td class="sorting_1">
+                                {{ item.pk }}
+                            </td>
+                            <td class="sorting_1" align="left">
+                                <button type="button" class="btn-link"
+                                        onclick="edit_dns(0,'{{ item.pr_name }}')">{{ item.pr_name }}</button>
+                            </td>
+                            <td class="sorting_1" align="left">
+                                <button type="button" class="btn-link"
+                                        onclick="edit_dns(0,'{{ item.pr_name_en }}')">{{ item.pr_name_en }}</button>
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.pr_admin }}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.pr_domain }}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.pr_vcs }}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.project_icp }}
+                            </td>
+                             <td class="sorting_1">
+                                {{ item.create_time | date:"Y-m-d H:i:s"}}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.update_time  | date:"Y-m-d H:i:s"}}
+                            </td>
+                            <td class="sorting_1">
+                                <button type="button" class="btn btn-primary btn-xs" onclick="edit_project(0, '{{ item.pk }}')">修改</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="delete_project('{{ item.pk }}','{{ item.pr_name }}')">删除</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    {% if project.has_previous %}
+                    <li><a href="?page={{ project.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+                    {% else %}
+                    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+                    {% endif %} {% if project.has_next %}
+                    <li><a href="?page={{ project.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+                    {% else %}
+                    <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
+                    {% endif %}
+                    <li class="paginate_button previous disabled">
+                        <span>第 {{ project.number }} 页 - 共 {{ project.paginator.num_pages }} 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#menu_project_admin').addClass('active')
+$('#page_header').text('项目（产品）维护')
+$('#page_header_descript').text('用于管理维护项目基本信息')
+$('#page_nav').text('PROJECT')
+$('#page_name').text('项目（产品）维护')
+
+function check_form(input) {
+    var input_div = $(input.closest("div"))
+    input_div.removeClass('has-error')
+    input_div.removeClass('has-success')
+    if (($(input).val() == "") || ($(input).attr('name') == "proxy_listen" && !$(input).val().indexOf("8000"))) {
+        input_div.addClass('has-error')
+    } else {
+        input_div.addClass('has-success')
+    }
+}
+
+function edit_project(create, pk) {
+    $('#a_default_conf').trigger('click');
+    if (create == 1) {
+        $('#edit_project_title').text('添加项目');
+        $('#edit_project_mtitle').text('');
+        $('#input_project_name').val('');
+        $('#input_project_name_en');
+        $('#input_project_admin').val('');
+        $('#input_project_domain').val('');
+        $('#input').empty();
+        $("[data-mask]").inputmask();
+        $('#edit_project').modal('show')
+    } else {
+        var post = {pk: pk};
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/project/query/',
+            data: JSON.stringify(post),
+            dataType: "json",
+            success: function(p) {
+                if (p.flag == "Success") {
+                    $('#edit_project_title').text('编辑数据中心');
+                    $('#edit_project_mtitle').text('正在编辑的数据中心：' + p.context.db_project.project_name);
+                    $('#input_project_id').val(pk);
+                    $('#input_project_name').val(p.context.db_project.project_name);
+                    $('#input_project_type').val(p.context.db_project.project_type);
+                    $('#input_project_address').val(p.context.db_project.address);
+                    $('#input_project_service_time').val(p.context.db_project.service_time);
+                    $('#input_project_contact').val(p.context.db_project.contact);
+                    $('#input_project_racks').val(p.context.db_project.stack);
+                    $('#input_project_bandwidth').val(p.context.db_project.bandwidth);
+
+                    $('#edit_project').modal('show')
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！');
+                    top.location = '/login/'
+                } else {
+                    alert('查询失败！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function delete_project(pk, name) {
+    if (confirm("确认删除[" + pk + name + "]？")) {
+        var post = {
+            pk: pk
+        };
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/project/delete/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("删除成功!")
+                    top.location = '/cmdb/project/'
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('删除错误！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function project_filter() {
+    window.location = '/cmdb/project/?filter=' + $('#input_project_filter').val()
+}
+
+function save_project() {
+        var base_config = $('#form_base_config').serializeObject();
+        var post = {'base_config': base_config};
+        $.ajax({
+            type: 'POST',
+            url: '/cmdb/project/save/',
+            data: JSON.stringify(post),
+            dataType: 'JSON',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("保存成功,JSON数据: " + JSON.stringify(post));
+                    top.location = '/cmdb/project/'
+                }else if (p.flag == "Error"){
+                    alert("保存失败，请检查数据,错误信息: " + p.context)
+                }
+            },
+            error: function () {
+                alert("error!");
+            }
+        })
+}
+</script>
+{% endblock %}

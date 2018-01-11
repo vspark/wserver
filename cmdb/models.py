@@ -72,6 +72,33 @@ class device(models.Model):
     update_time = models.DateTimeField(default=timezone.now, editable=True)
 
 
+class domain(models.Model):
+    dm_name = models.CharField(max_length=128, null=False)
+    dm_service = models.CharField(max_length=128, null=False)
+    dm_service_time = models.DateField(blank=False)
+    dm_environment = models.CharField(max_length=128, null=True)
+    dm_project = models.CharField(max_length=128, null=True)
+    dm_icp = models.CharField(max_length=128, null=True)
+    create_time = models.DateTimeField(default=timezone.now, editable=True)
+    update_time = models.DateTimeField(default=timezone.now, editable=True)
+
+
+class dns(models.Model):
+    rc_rr = models.CharField(max_length=128, null=False)
+    rc_value = models.GenericIPAddressField(null=False)
+    rc_type = models.CharField(max_length=128, null=False)
+    rc_line = models.CharField(max_length=128, null=True)
+    rc_priority = models.CharField(max_length=128, null=True)
+    rc_ttl = models.CharField(max_length=128, null=False)
+    rc_environment = models.CharField(max_length=128, null=True)
+    rc_service = models.CharField(max_length=128, null=True)
+    create_time = models.DateTimeField(default=timezone.now, editable=True)
+    update_time = models.DateTimeField(default=timezone.now, editable=True)
+
+
 class foo(models.Model):
     foo_name = models.CharField(max_length=20, null=False)
     foo_bar = models.CharField(max_length=128, null=False)
+
+
+

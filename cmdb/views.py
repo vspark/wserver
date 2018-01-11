@@ -3,11 +3,12 @@ from django.shortcuts import render, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.db.models import Q
-from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 
 from cmdb import models
 from cmdb.models import device
+from cmdb.models import domain as dm
 
 
 def foo(request):
@@ -24,6 +25,10 @@ def installations(request):
 
 def statistics(request):
     return render(request, 'cmdb/view.html')
+
+
+def domain(request):
+    return render(request, 'cmdb/domain.html')
 
 
 def ip(request):
@@ -44,6 +49,29 @@ def vms(request):
 
 def net(request):
     return render(request, 'cmdb/view.html')
+
+
+@login_required(login_url="/login/")
+def domain_view(request):
+    filter = request.GET.get('filter', "")
+    if filter:
+        p_domain = dm.objects.filter(Q(dm_name__contains=filter))
+    else:
+        p_domain = dm.objects.all()
+
+    NUM_PER_PAGE = 10
+    paginater = Paginator(p_domain, NUM_PER_PAGE)
+    page = request.GET.get('page')
+
+    try:
+        contexts = paginater.page(page)
+    except PageNotAnInteger:
+        contexts = paginater.page(1)
+    except EmptyPage:
+        contexts = paginater.page_range(paginater.num_pages)
+
+    return render_to_response('cmdb/domain.html', {'domain': contexts, 'filter': filter})
+    pass
 
 
 @login_required(login_url="/login/")
@@ -71,6 +99,7 @@ def device_view(request):
 
     return render_to_response('cmdb/device.html', {'device': contexts, 'filter': filter})
     pass
+
 
 @login_required(login_url="/login/")
 def idc_query(request):

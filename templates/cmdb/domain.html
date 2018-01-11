@@ -1,0 +1,286 @@
+{% extends "base.html" %} {% block content %} {% load custom_filter %}
+<!-- Modal -->
+<div class="modal fade" id="edit_dm" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="edit_dm_title"></h4><small id="edit_dm_mtitle"></small>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_base_config" data-toggle="tab" id="a_default_conf">域名信息</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_base_config">
+                            <form class="form-horizontal" id="form_base_config">
+                                <input type="text" name="dm_id" id="input_dm_id" hidden>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">域名</label>
+                                    <div class="col-sm-9" id="div_dm_name">
+                                        <input type="text" class="form-control" name="dm_name" id="input_dm_name"
+                                               placeholder="请填写主域名,如: foo.com" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">服务商</label>
+                                    <div class="col-sm-9" id="div_service">
+                                        <input type="text" class="form-control" name="dm_service" id="input_dm_service"
+                                               placeholder="选择域名服务商" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">到期时间</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" name="dm_service_time" id="input_dm_service_time"
+                                               placeholder="请填写数据中心本期合同的到期日期" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">使用环境</label>
+                                    <div class="col-sm-9" id="div_dm_environment">
+                                        <input type="text" class="form-control" name="dm_environment" id="input_dm_environment"
+                                               placeholder="请填选择域名的使用环境" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ICP备案号</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="dm_icp" id="input_dm_icp"
+                                               placeholder="请填写域名ICP备案号" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <span class="control-label pull-right">
+                                            <small>域名基础信息（* 为可选项）</small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save_dm()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <button type="button" class="btn btn-primary pull-left" onclick="edit_dm(1,0)">添加域名</button>
+                <div class="input-group pull-right" style="width: 350px;">
+                    <input type="text" name="dm_filter" id="input_dm_filter"
+                           class="form-control pull-right" placeholder="输入要查找的域名|使用环境|项目名称"
+                           autofocus="" onkeydown="if(event.keyCode===13){dm_filter()}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" onclick="dm_filter()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-bordered table-hover dataTable table-striped" role="grid">
+                    <thead>
+                        <tr role="row">
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">#</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">域名</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">使用环境</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">项目列表</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">服务商</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">到期时间</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">备案信息</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">创建时间</th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending">最后一次修改</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in domain %}
+                        <tr role="row" class="odd">
+                            <td class="sorting_1">
+                                {{ item.pk }}
+                            </td>
+                            <td class="sorting_1" align="left">
+                                <button type="button" class="btn-link"
+                                        onclick="edit_dns(0,'{{ item.dm_name }}')">{{ item.dm_name }}</button>
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.dm_environment }}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.dm_project }}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.dm_service }}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.dm_service_time  | date:"Y-m-d"}}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.dm_icp }}
+                            </td>
+                             <td class="sorting_1">
+                                {{ item.create_time | date:"Y-m-d H:i:s"}}
+                            </td>
+                            <td class="sorting_1">
+                                {{ item.update_time  | date:"Y-m-d H:i:s"}}
+                            </td>
+                            <td class="sorting_1">
+                                <button type="button" class="btn btn-primary btn-xs" onclick="edit_dm(0, '{{ item.pk }}')">修改</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="delete_dm('{{ item.pk }}','{{ item.dm_name }}')">删除</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    {% if dm.has_previous %}
+                    <li><a href="?page={{ dm.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+                    {% else %}
+                    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+                    {% endif %} {% if dm.has_next %}
+                    <li><a href="?page={{ dm.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+                    {% else %}
+                    <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
+                    {% endif %}
+                    <li class="paginate_button previous disabled">
+                        <span>第 {{ dm.number }} 页 - 共 {{ dm.paginator.num_pages }} 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#menu_cmdb_dm').addClass('active')
+$('#page_header').text('域名解析管理')
+$('#page_header_descript').text('用于管理域名及记录解析')
+$('#page_nav').text('DNS')
+$('#page_name').text('域名管理')
+
+function check_form(input) {
+    var input_div = $(input.closest("div"))
+    input_div.removeClass('has-error')
+    input_div.removeClass('has-success')
+    if (($(input).val() == "") || ($(input).attr('name') == "proxy_listen" && !$(input).val().indexOf("8000"))) {
+        input_div.addClass('has-error')
+    } else {
+        input_div.addClass('has-success')
+    }
+}
+
+function edit_dm(create, pk) {
+    $('#a_default_conf').trigger('click');
+    if (create == 1) {
+        $('#edit_dm_title').text('新增域名');
+        $('#edit_dm_mtitle').text('');
+        $('#input_dm_name').val('');
+        $('#input_dm_type').val('');
+        $('#input_dm_address').val('');
+        $('#input_dm_service_time').val('');
+        $('#input_dm_contact').val('');
+        $('#input_dm_racks').val('');
+        $('#input_dm_bandwidth').val('');
+        $('#input').empty();
+        $("[data-mask]").inputmask();
+        $('#edit_dm').modal('show')
+    } else {
+        var post = {pk: pk};
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/dm/query/',
+            data: JSON.stringify(post),
+            dataType: "json",
+            success: function(p) {
+                if (p.flag == "Success") {
+                    $('#edit_dm_title').text('编辑数据中心');
+                    $('#edit_dm_mtitle').text('正在编辑的数据中心：' + p.context.db_dm.dm_name);
+                    $('#input_dm_id').val(pk);
+                    $('#input_dm_name').val(p.context.db_dm.dm_name);
+                    $('#input_dm_type').val(p.context.db_dm.dm_type);
+                    $('#input_dm_address').val(p.context.db_dm.address);
+                    $('#input_dm_service_time').val(p.context.db_dm.service_time);
+                    $('#input_dm_contact').val(p.context.db_dm.contact);
+                    $('#input_dm_racks').val(p.context.db_dm.stack);
+                    $('#input_dm_bandwidth').val(p.context.db_dm.bandwidth);
+
+                    $('#edit_dm').modal('show')
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！');
+                    top.location = '/login/'
+                } else {
+                    alert('查询失败！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function delete_dm(pk, name) {
+    if (confirm("确认删除[" + pk + name + "]？")) {
+        var post = {
+            pk: pk
+        };
+        $.ajax({
+            type: 'post',
+            url: '/cmdb/dm/delete/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("删除成功!")
+                    top.location = '/cmdb/dm/'
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('删除错误！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function dm_filter() {
+    window.location = '/cmdb/dm/?filter=' + $('#input_dm_filter').val()
+}
+
+function save_dm() {
+        var base_config = $('#form_base_config').serializeObject();
+        var post = {'base_config': base_config};
+        $.ajax({
+            type: 'POST',
+            url: '/cmdb/dm/save/',
+            data: JSON.stringify(post),
+            dataType: 'JSON',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("保存成功,JSON数据: " + JSON.stringify(post));
+                    top.location = '/cmdb/dm/'
+                }else if (p.flag == "Error"){
+                    alert("保存失败，请检查数据,错误信息: " + p.context)
+                }
+            },
+            error: function () {
+                alert("error!");
+            }
+        })
+}
+</script>
+{% endblock %}
